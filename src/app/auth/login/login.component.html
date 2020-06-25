@@ -1,11 +1,11 @@
 <section class="login-section" fxLayout="column" fxLayoutAlign="center center">
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <form *ngIf="!isLoading" fxLayout="column" fxLayoutGap="0.5rem" fxLayoutAlign="center center" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+    <form *ngIf="!(isLoading$ | async)" fxLayout="column" fxLayoutGap="0.5rem" fxLayoutAlign="center center" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <mat-form-field >
             <mat-label>Your Email</mat-label>
             <input 
             matInput  
-            placeholder="Enter your email"
+            placeholder="Enter your email" 
             type="email"
             formControlName="email">
             <mat-error *ngIf="!loginForm.controls.email.hasError('required')">Invalid email</mat-error>
@@ -23,6 +23,6 @@
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Submit</button>
     </form> 
-</section> 
+</section>  
 
 

@@ -1,6 +1,6 @@
 <section class="signup-section" fxLayout="column" fxLayoutAlign="center center">
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
-    <form *ngIf="!isLoading" fxLayout="column" fxLayoutGap="0.5rem" fxLayoutAlign="center center" (ngSubmit)="onSubmit(f)" #f="ngForm">
+    <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
+    <form *ngIf="!(isLoading$ | async)" fxLayout="column" fxLayoutGap="0.5rem" fxLayoutAlign="center center" (ngSubmit)="onSubmit(f)" #f="ngForm">
         <mat-form-field >
             <mat-label>Your Email</mat-label>
             <input 

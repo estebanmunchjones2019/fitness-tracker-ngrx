@@ -1,31 +1,30 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
  
 
 import { TrainingService } from '../training.service';
 import { Exercise } from '../exercise.model';
-import { UiService } from 'src/app/shared/ui.service';
+import * as fromTraining from '../store/training.reducer';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-new-training',
   templateUrl: './new-training.component.html',
   styleUrls: ['./new-training.component.css']
 })
-export class NewTrainingComponent implements OnInit, OnDestroy {
-  value: string;
-  exercises: Exercise[];
-  exercisesSubs: Subscription;
-  isLoading: boolean = true;
-  showButton: boolean = false;
+export class NewTrainingComponent implements OnInit {
+  availableExercises$: Observable<Exercise[]>;
+  isLoading$: Observable<boolean>
+  
   
   constructor(private trainingService: TrainingService,
-              private firestore: AngularFirestore,
-              private uiService: UiService) { } 
+              private store: Store<fromTraining.State>) { } 
 
   ngOnInit(): void {
+    this.isLoading$ = this.store.select(fromApp.getIsLoading);
+    this.availableExercises$ = this.store.select(fromTraining.getAvailableExercises);
     this.fetchAvailableExercises();
   }
 
@@ -33,22 +32,8 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
     this.trainingService.startExercise(f.value.exercise);
   }
 
-  ngOnDestroy() {
-    if (this.exercisesSubs) {
-      this.exercisesSubs.unsubscribe();
-    }
-  }
-
   fetchAvailableExercises() {
-    this.exercisesSubs = this.trainingService.getAvailableExercises().subscribe((exercises: Exercise[]) => {
-      this.isLoading = false;
-      this.showButton = false;
-      this.exercises = exercises;
-    }, error => {
-      this.isLoading = false;
-      this.uiService.openSnackBar(error.message);
-      this.showButton = true;
-      });
+    this.trainingService.getAvailableExercises();
   }
 
   onReload() {

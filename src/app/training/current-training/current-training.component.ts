@@ -1,37 +1,40 @@
-import { Component, OnInit, EventEmitter, Output, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
 
 import { StopTrainingComponent } from './stop-training/stop-training.component';
 import { TrainingService } from '../training.service';
-import { Exercise } from '../exercise.model';
-import { Subscription } from 'rxjs';
-
+import * as fromTraining from '../store/training.reducer';
 
 @Component({
   selector: 'app-current-training',
   templateUrl: './current-training.component.html',
   styleUrls: ['./current-training.component.css']
 })
-export class CurrentTrainingComponent implements OnInit, OnDestroy {
+export class CurrentTrainingComponent implements OnInit {
   progress: number = 0;
   timer;
-
+  
   constructor(public dialog: MatDialog,
-              private trainingService: TrainingService) { }
+              private trainingService: TrainingService,
+              private store: Store<fromTraining.State>) { }
 
   ngOnInit(): void {
     this.initTimer();
   } 
 
   initTimer() {
-    const step = this.trainingService.getRunningExercise().duration / 100 * 1000;
-    this.timer = setInterval(() => {
-      this.progress = this.progress + 1;
-      if (this.progress >= 100) {
-        this.trainingService.completeExercise();
-        clearInterval(this.timer); 
-      }
-    }, step)
+    this.store.select(fromTraining.getRunningExercise).pipe(take(1)).subscribe(exercise => {
+      const step = exercise.duration / 100 * 1000;
+      this.timer = setInterval(() => {
+        this.progress = this.progress + 1;
+        if (this.progress >= 100) {
+          this.trainingService.completeExercise();
+          clearInterval(this.timer); 
+        }
+      }, step)
+    }) 
   }
 
   onStop() {
@@ -48,12 +51,7 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
       } else {
         this.initTimer();  
       }
-      
     });
   }
-
-  ngOnDestroy() {
-  }
- 
 
 }
