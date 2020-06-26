@@ -1,11 +1,5 @@
 {
-  "targets": {
-    "fitness-tracker-b4ee9": {
-      "hosting": {
-        "fitness-tracker": [
-          "fitness-tracker-b4ee9"
-        ]
-      }
-    }
+  "projects": {
+    "default": "fitness-tracker-b4ee9"
   }
 }
