@@ -31,7 +31,6 @@ export class LoginComponent implements OnInit {
     })
   }
 
-
   onSubmit() {
     const authData: AuthData = {
       email: this.loginForm.value.email,

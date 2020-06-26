@@ -21,7 +21,7 @@ export class TrainingService {
               private uiService: UiService) { }
 
 
-  getAvailableExercises() {
+  fetchAvailableExercises() {
     this.store.dispatch(new UiActions.StartLoading());
     this.fsSubs.push(
       this.firestore
@@ -43,11 +43,12 @@ export class TrainingService {
         this.store.dispatch(new UiActions.StopLoading());
       }, error => {
           this.uiService.openSnackBar(error.message);
+          this.store.dispatch(new UiActions.StopLoading());
       }) 
     )
   }
 
-  getFinishedExercises() {
+  fetchFinishedExercises() {
     this.fsSubs.push(
       this.firestore.collection('exercises').valueChanges()
       .subscribe((exercises: Exercise[]) => {

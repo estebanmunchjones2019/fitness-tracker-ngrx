@@ -16,6 +16,7 @@ import * as fromTraining from '../store/training.reducer';
 export class PastTrainingsComponent implements OnInit, AfterViewInit {
   exercises = new MatTableDataSource<Exercise>();
   displayedColumns: string[] = [ 'date', 'name', 'duration', 'calories', 'state'];
+  
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   
@@ -23,10 +24,10 @@ export class PastTrainingsComponent implements OnInit, AfterViewInit {
               private store: Store<fromTraining.State>) { }
 
   ngOnInit(): void {
-    this.trainingService.getFinishedExercises();
     this.store.select(fromTraining.getFinishedExercises).subscribe(exercises => {
       this.exercises.data = exercises;
     })
+    this.trainingService.fetchFinishedExercises();
   }  
 
   ngAfterViewInit() {

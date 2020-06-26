@@ -9,6 +9,7 @@ import { UiService } from '../shared/ui.service';
 import * as fromApp from '../store/app.reducer';
 import * as UiActions from '../shared/store/ui.actions';
 import * as AuthActions from './store/auth.actions';
+import { TrainingService } from '../training/training.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,8 @@ export class AuthService {
   constructor(private router: Router,
               private fireAuth: AngularFireAuth,
               private uiService: UiService,
-              private store: Store<fromApp.AppState>) { }
+              private store: Store<fromApp.AppState>,
+              private trainingService: TrainingService) { }
 
   initAuthListener() {
     this.initAuthListenerSubs = this.fireAuth.authState.subscribe(user => {
@@ -29,7 +31,9 @@ export class AuthService {
         this.router.navigate(['/training']);
         this.store.dispatch(new UiActions.StopLoading())
       } else {
+        this.trainingService.cancelExercisesSubs();
         this.store.dispatch(new AuthActions.SetUnauthenticated());
+        this.router.navigate(['/']);
       }
     })
   }

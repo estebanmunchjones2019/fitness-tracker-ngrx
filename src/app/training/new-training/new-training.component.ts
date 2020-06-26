@@ -33,11 +33,7 @@ export class NewTrainingComponent implements OnInit {
   }
 
   fetchAvailableExercises() {
-    this.trainingService.getAvailableExercises();
-  }
-
-  onReload() {
-    this.fetchAvailableExercises();
+    this.trainingService.fetchAvailableExercises();
   }
 
 }
