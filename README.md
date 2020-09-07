@@ -145,6 +145,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 List of implemented features:
 * Authentication
 * Form validation
+* Lazy loading
 * Perform PUT and GET  requests to [Cloud Firestore](https://firebase.google.com/docs/firestore)
 * Filter past exercises by type or state
 * Select items per page for the past exercises table
@@ -153,7 +154,7 @@ List of implemented features:
 List of future improvements:
 
 * Give the home page a better look, with icons and images
-* Store each user's past exercises in separate collection, because now it's a massive shared data base between for all users.
+* Store each user's past exercises in separate collection, because now it's a shared database between all users.
 * Add a settings tab for creating new exercise types and modifying existing ones. (perform PUT and UPDATE requests).
 
 ## Status
