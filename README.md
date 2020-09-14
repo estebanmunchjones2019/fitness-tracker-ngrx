@@ -146,7 +146,7 @@ List of implemented features:
 * Authentication
 * Form validation
 * Lazy loading
-* Perform PUT and GET  requests to [Cloud Firestore](https://firebase.google.com/docs/firestore)
+* Perform create and read operations to/from [Cloud Firestore](https://firebase.google.com/docs/firestore)
 * Filter past exercises by type or state
 * Select items per page for the past exercises table
 * Pagination
@@ -155,7 +155,7 @@ List of future improvements:
 
 * Give the home page a better look, with icons and images
 * Store each user's past exercises in separate collection, because now it's a shared database between all users.
-* Add a settings tab for creating new exercise types and modifying existing ones. (perform PUT and UPDATE requests).
+* Add a settings tab for creating new exercise types and modifying existing ones, performing create, update and delete operations.
 
 ## Status
 
